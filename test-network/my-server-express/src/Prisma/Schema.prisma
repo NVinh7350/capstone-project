@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  citizenId     String   @id
+  citizenNumber String
+  fullName      String
+  password      String
+  x509Identity  String?  @db.Text
+  email         String?
+  birthDay      DateTime @db.Date
+  gender        Gender
+  role          Role
+  ethnicity     String?
+  address       String?
+  phoneNumber   String?
+  refreshToken  String?
+  organization  String?
+  avatar        String?  @db.LongText
+  createDate    DateTime @default(now())
+  doctor        Doctor?  @relation("USER_DOCTOR")
+  patient       Patient? @relation("USER_PATIENT")
+}
+
+model Patient {
+  citizenId         String          @id
+  HICNumber         String?
+  guardianName      String?
+  guardianPhone     String?
+  guardianAddress   String?
+  MROwned           MedicalRecord[] @relation("OWNER_MR")
+  user              User            @relation("USER_PATIENT", fields: [citizenId], references: [citizenId])
+  accessList        access[]        @relation("PATIENT_ACCESSLIST")
+  accessRequestList accessRequest[] @relation("PATIENT_REQUESTLIST")
+}
+
+model Doctor {
+  citizenId         String          @id
+  position          String
+  specialty         String
+  hospital          String
+  user              User            @relation("USER_DOCTOR", fields: [citizenId], references: [citizenId])
+  MRCreated         MedicalRecord[] @relation("CREATOR_MR")
+  accessList        access[]        @relation("DOCTOR_ACCESSLIST")
+  accessRequestList accessRequest[] @relation("DOCTOR_REQUESTLIST")
+}
+
+model access {
+  doctorId    String
+  patientId   String
+  requestTime DateTime
+  doctor      Doctor   @relation("DOCTOR_ACCESSLIST", fields: [doctorId], references: [citizenId])
+  patient     Patient  @relation("PATIENT_ACCESSLIST", fields: [patientId], references: [citizenId])
+
+  @@id([doctorId, patientId])
+  @@index([patientId], map: "access_patientId_fkey")
+}
+
+model accessRequest {
+  doctorId    String
+  patientId   String
+  requestTime DateTime
+  status      ARStatus
+  doctor      Doctor   @relation("DOCTOR_REQUESTLIST", fields: [doctorId], references: [citizenId])
+  patient     Patient  @relation("PATIENT_REQUESTLIST", fields: [patientId], references: [citizenId])
+
+  @@id([doctorId, patientId])
+  @@index([patientId], map: "accessRequest_patientId_fkey")
+}
+
+model MedicalRecord {
+  MRId               String      @id @default(uuid())
+  status             MRStatus
+  doctorId           String
+  patientId          String
+  comeTime           DateTime @db.DateTime()
+  personalMH         String
+  familyMH           String
+  majorReason        String
+  pathogenesis       String
+  body               String
+  organs             String
+  pulse              String
+  temperature        String
+  maxBP              String
+  minBP              String
+  breathing          String
+  weight             String
+  summaryMR          String
+  diagnosis          String
+  prognosis          String
+  directionTreatment String
+  finishTime         DateTime? 
+  creator            Doctor      @relation("CREATOR_MR", fields: [doctorId], references: [citizenId])
+  owner              Patient     @relation("OWNER_MR", fields: [patientId], references: [citizenId])
+  treatments         Treatment[] @relation("TREATMENT_MR")
+
+  @@index([doctorId], map: "MedicalRecord_doctorId_fkey")
+  @@index([patientId], map: "MedicalRecord_patientId_fkey")
+}
+
+model Treatment {
+  treatmentId        Int           @id @default(autoincrement())
+  diseaseProgression String?
+  treatmentTime      DateTime?
+  MRId               String
+  medicines          Medicine[]    @relation("TREATMENT_MEDICINE")
+  medicalRecord      MedicalRecord @relation("TREATMENT_MR", fields: [MRId], references: [MRId])
+
+  @@index([MRId], map: "Treatment_MRId_fkey")
+}
+
+model Medicine {
+  treatmentId   Int
+  medicineId    Int       @id @default(autoincrement())
+  medicineName  String
+  drugDosage    String
+  drugFrequency String
+  totalDay      String
+  specify       String
+  treatment     Treatment @relation("TREATMENT_MEDICINE", fields: [treatmentId], references: [treatmentId])
+
+  @@index([treatmentId], map: "Medicine_treatmentId_fkey")
+}
+
+
+
+enum TypeMR {
+  INPATIENT
+  OUTPATIENT
+}
+
+enum ARStatus {
+  AGREE
+  REFUSE
+  PENDING
+}
+
+enum MRStatus {
+  COMPLETED
+  CREATING
+}
+
+enum Role {
+  DOCTOR
+  PATIENT
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}

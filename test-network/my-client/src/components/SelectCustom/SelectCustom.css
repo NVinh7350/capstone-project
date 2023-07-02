@@ -1,0 +1,59 @@
+
+.dropbtn {
+    width: 120px;
+    height: 40px;
+    background-color: white;
+    padding: 10px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-sizing: border-box;
+    border: 1px solid var(--prima--color);
+    color: var(--prima--color);
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+.dropdown {
+    width: 120px;
+    position: relative;
+    display: inline-block;
+}
+.dropdown label {
+    position: absolute;
+    top: 10px;
+    left: -25px;
+    border: 1px solid;
+}
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--prima--color);
+    width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content button {
+    width: 100%;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: var(--prima--color);
+    border: none;
+    outline: none;
+  }
+  
+  .dropdown-content button:hover {
+    background-color: #ddd;
+}
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+}
+  
+  .dropdown:hover .dropbtn {
+    color: var(--prima--color);
+    background-color: white;
+}

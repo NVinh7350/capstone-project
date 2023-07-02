@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: always
+    environment:
+      - MYSQL_DATABASE=MEDICAL_RECORD_DB
+      - MYSQL_ROOT_PASSWORD=Bod96535
+      - MYSQL_MAJOR=8.0
+      - MYSQL_VERSION=8.0.33-1.el8
+    ports:
+      - '3306:3306'
+    volumes:
+      - db:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  db:
+    driver: local

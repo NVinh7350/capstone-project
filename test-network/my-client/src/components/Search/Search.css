@@ -1,0 +1,36 @@
+.search-container {
+    max-width: 350px;
+    min-width: 300px;
+    width: 30%;
+    height: 19px;
+    background-color: white;
+    padding: 10px 5px;
+    display: flex;
+    align-items: center;
+    border-radius: 60px;
+    justify-content: space-between;
+    border: 1px solid var(--prima--color);
+}
+
+.search-container input {
+    margin-left: 10px;
+    width: 230px;
+    font-size: 15px;
+    border: none;
+    background: none;
+    color: black;
+    outline: none;
+}
+
+.search-container button {
+    height: 30px;
+    width: 30px;
+    font-size: 15px;
+    border-radius: 100px;
+    padding: 0;
+    font-weight: 700;
+    color: white;
+    background: var(--prima--color);
+    border: none;
+}
+
