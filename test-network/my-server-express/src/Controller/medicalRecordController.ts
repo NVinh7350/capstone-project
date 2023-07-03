@@ -201,8 +201,8 @@ const getDetailMR = async (req: Request, res: Response) => {
         
         const MRHashLedger = resultLedger.medicalRecordHashData;
         const MRHashSQL    = crypto.createHash('sha256').update(JSON.stringify(resultMySQL)).digest('hex'); 
-        console.log(MRHashLedger === MRHashSQL);
         console.log('Hash of Medical Record from Ledger:', MRHashLedger);
+        console.log('Medical Record from SQLDB:', (resultMySQL));
         console.log('Medical Record from SQLDB:', JSON.stringify(resultMySQL));
         console.log('Hash of Medical Record from SQLDB', MRHashSQL);
         if(MRHashLedger !== MRHashSQL){
