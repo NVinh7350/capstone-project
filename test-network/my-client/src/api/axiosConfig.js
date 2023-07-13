@@ -1,13 +1,12 @@
 import axios, { AxiosError } from "axios";
 import {clearStorage, getAccessToken, getRefreshToken, setAccessToken,setRefreshToken, getUser, setUser} from '../utils/LocalStorage'
-
 export const instance = axios.create({
-    baseURL: "http://192.168.137.129:1111/api/v1",
+    baseURL: `http://192.168.54.10:1111/api/v1`,
 });
 
 instance.interceptors.request.use(
     function (config) {
-        config.timeout = 5000;
+        config.timeout = 15000;
         const accessToken = getAccessToken();
         config.headers.Authorization = `Bearer ${accessToken}`;
 

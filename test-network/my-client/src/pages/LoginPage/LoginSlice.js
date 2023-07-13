@@ -2,11 +2,14 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios, { AxiosError } from 'axios'
 import {clearStorage, setAccessToken, setRefreshToken, setUser } from '../../utils/LocalStorage'
 import { instance } from '../../api/axiosConfig'
+import doctorSlice from '../DoctorPage/DoctorSlice'
+import patientSlice from '../PatientPage/PatientSlice'
+import adminSlice from '../AdminPage/AdminSlice'
 
 const initialState = {
     loginInfo: {
-        citizenId: 'admin',
-        password: 'adminpw'
+        citizenId: '',
+        password: ''
     },
     token: {
         accessToken: null,
@@ -100,6 +103,7 @@ export const onLogin = createAsyncThunk(
             return token.data
         } catch (error) {
             console.log('first')
+            console.log(error)
                 return rejectWithValue(error.response?.data?.error);
         }
     }
@@ -129,8 +133,11 @@ export const getUser = createAsyncThunk(
 
 export const onLogout = createAsyncThunk(
     'login/onLogout',
-    async (_, { getState, rejectWithValue }) => {
+    async (_, { getState, rejectWithValue, dispatch }) => {
         try {
+            dispatch(doctorSlice.actions.removeState());
+            dispatch(patientSlice.actions.removeState());
+            dispatch(adminSlice.actions.removeState());
             clearStorage();
             return null;
         } catch (error) {

@@ -364,7 +364,6 @@ const doctors = [
     },
 
 ]
-
 export const initData = async () => {
     try {
         const totalUser = await prisma.user.count({

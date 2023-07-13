@@ -56,6 +56,11 @@ export const adminSlice = createSlice({
         setAccountList: (state, action) => {
             state.accountList = action.payload;
         },
+        removeState : (state, action) =>{
+            state = {
+                ...initialState
+            }
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -114,7 +119,7 @@ export const adminSlice = createSlice({
                 state.success = null;
             })
             .addCase(createDoctor.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'createDoctor';
                 state.error = null;
                 state.success = null;
             })
@@ -131,7 +136,7 @@ export const adminSlice = createSlice({
                 state.success = null;
             })
             .addCase(createPatient.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'createPatient';
                 state.error = null;
                 state.success = null;
             })
@@ -148,7 +153,7 @@ export const adminSlice = createSlice({
                 state.success = null;
             })
             .addCase(updateAdminInfo.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'updateAdminInfo';
                 state.error = null;
                 state.success = null;
             })
@@ -165,7 +170,7 @@ export const adminSlice = createSlice({
                 state.success = null;
             })
             .addCase(changePassword.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'changePassword';
                 state.error = null;
                 state.success = null;
             })

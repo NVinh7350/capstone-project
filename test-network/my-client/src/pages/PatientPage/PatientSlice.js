@@ -48,14 +48,7 @@ export const patientSlice = createSlice({
         },
         removeState : (state, action) => {
             state = {
-                isLoading: false,
-                error: null,
-                passwordUpdate: null,
-                patientInfo: null,
-                userInfo : null,
-                accessRequestList: [],
-                accessList: [],
-                detailDoctor: null
+                ...initialState
             }
         },
         setMedicalRecord: (state,action) => {
@@ -71,7 +64,7 @@ export const patientSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(updatePatientInfo.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'updatePatientInfo';
                 state.error = null;
                 state.success = null;
             })
@@ -86,7 +79,7 @@ export const patientSlice = createSlice({
                 state.success = null;
             })
             .addCase(changePassword.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'changePassword';
                 state.error = null;
                 state.success = null;
             })

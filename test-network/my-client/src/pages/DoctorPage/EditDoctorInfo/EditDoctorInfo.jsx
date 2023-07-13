@@ -310,7 +310,7 @@ export const EditDoctorInfo = () => {
                         }}
                         style={{margin:'20px 30px'}}
                     >
-                        {doctorSelect.isLoading ?
+                        {doctorSelect.isLoading === 'updateDoctorInfo' ?
             (<ReactLoading color="white" height='40px' width='40px' type={"spinningBubbles"}></ReactLoading>) :'Cập nhật'}
                     </button>
                         </div>
@@ -362,7 +362,7 @@ export const EditDoctorInfo = () => {
                             );
                         }}
                     >
-                        {doctorSelect.isLoading ? (
+                        {doctorSelect.isLoading === 'changePassword' ? (
                             <ReactLoading
                                 color="white"
                                 height="40px"

@@ -266,7 +266,7 @@ export const EditInfo = () => {
                             );
                         }}
                     >
-                        {adminSelect.isLoading ? (
+                        {adminSelect.isLoading === 'updateAdminInfo' ? (
                             <ReactLoading
                                 color="white"
                                 height="40px"
@@ -280,7 +280,7 @@ export const EditInfo = () => {
                 </div>
                 <div className="doctor-input-container">
                     <h4>Đổi mật khẩu</h4>
-                    <span style={{ position: 'relative', top: '9.5%', left: '80%', zIndex: 1 }}>
+                    <span style={{ position: 'relative', top: '11%', left: '80%', zIndex: 1 }}>
                         {
                             showPW ?
                                 <BsFillEyeFill onClick={() => setShowPW(!showPW)}></BsFillEyeFill>
@@ -325,7 +325,7 @@ export const EditInfo = () => {
                             );
                         }}
                     >
-                        {adminSelect.isLoading ? (
+                        {adminSelect.isLoading == 'changePassword' ? (
                             <ReactLoading
                                 color="white"
                                 height="40px"

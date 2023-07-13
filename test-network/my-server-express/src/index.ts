@@ -10,12 +10,13 @@ dotenv.config();
 
 
 const port: number = Number(process.env.PORT || '1111');
-const frontEndHost: string = process.env.FRONT_END_HOST || 'http://192.168.137.129:5173';
+const frontEndHost: string = process.env.FRONT_END_HOST || 'http://192.168.1.96:5173';
+console.log(frontEndHost);
 const app: Express = express();
 app.use(function (req: Request , res: Response, next) {
     
     // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', frontEndHost);
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');

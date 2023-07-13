@@ -306,7 +306,7 @@ export const MRTable = () => {
                                         <td style={{ textAlign: 'left', fontWeight: 'bolder' }}>{request?.creator?.user?.fullName}</td>
                                         <td>{request?.creator?.hospital}</td>
                                         <td>{getDateTime(getDateTimeLocal(request?.comeTime))}</td>
-                                        <td style={{ textAlign: 'left' }}>{request?.majorReason}</td>
+                                        <td style={{ textAlign: 'left' }}>{request?.diagnosis}</td>
                                         <td>
                                             {request?.status == 'CREATING' ? (
                                                 <span className="success status">

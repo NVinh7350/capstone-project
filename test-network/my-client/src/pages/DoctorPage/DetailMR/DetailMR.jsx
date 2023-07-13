@@ -26,18 +26,6 @@ const DetailMR = () => {
     const checkCreator = user?.citizenId === medicalRecord.doctorId;
     const doctor = patientSelect.detailDoctor;
     useEffect(() => {
-        // dispatch(doctorSlice.actions.setNewMedicalRecord({
-        //     ...doctorSelect.medicalRecord,
-        //     doctorId: user.citizenId,
-        //     patientId: patient.citizenId,
-        //     specialty: user?.doctor?.specialty,
-        //     status: 'CREATING'
-        // }))
-        // dispatch(doctorSlice.actions.setMedicalRecord({
-            // ...medicalRecord,
-            // comeTime : getDate(medicalRecord?.comeTime)
-        // }))
-
         
         return () => {
             dispatch(doctorSlice.actions.setMedicalRecord(null));
@@ -47,7 +35,6 @@ const DetailMR = () => {
         }
     }, [])
     const handleAddTreatment = () => {
-        // setTreatments([...treatments, { diseaseProgression: '', treatmentTime: '', medicines: [] }]);
         dispatch(doctorSlice.actions.setNewTreatments([...newTreatments, {
             diseaseProgression: '', treatmentTime: '', medicines: [] 
         }]))
@@ -56,7 +43,6 @@ const DetailMR = () => {
     const handleRemoveTreatment = (index) => {
         const updatedTreatments = [...newTreatments];
         updatedTreatments.splice(index, 1);
-        // setTreatments(updatedTreatments);
         dispatch(doctorSlice.actions.setNewTreatments(updatedTreatments));
     };
     console.log(newTreatments);
@@ -79,21 +65,10 @@ const DetailMR = () => {
             }
             return e
         });
-        // updatedTreatments[treatmentIndex]?.medicines?.push({
-        //     medicineName: '',
-        //     drugDosage: '',
-        //     drugFrequency: '',
-        //     totalDay: '',
-        //     specify: ''
-        // });
-        // setTreatments(updatedTreatments);
-        console.log(updatedTreatments)
         dispatch(doctorSlice.actions.setNewTreatments(updatedTreatments));
     };
 
     const handleRemoveMedicine = (treatmentIndex, medicineIndex) => {
-        // const updatedTreatments = [...newTreatments];
-        // updatedTreatments[treatmentIndex].medicines.splice(medicineIndex, 1);
         let updatedTreatments = [...newTreatments].map((e, index) => {
             if(index === treatmentIndex) {
                 return {
@@ -105,14 +80,12 @@ const DetailMR = () => {
             }
             return e
         });
-        // setTreatments(updatedTreatments);
         dispatch(doctorSlice.actions.setNewTreatments(updatedTreatments));
     };
 
     const handleInputChange = (treatmentIndex, medicineIndex, e) => {
         let updatedTreatments 
         if (medicineIndex === null) {
-            // updatedTreatments[treatmentIndex][e.target.name] = e.target.value;
             updatedTreatments = [...newTreatments].map((treatment, index) => {
                 if(index === treatmentIndex) {
                     return {
@@ -123,7 +96,6 @@ const DetailMR = () => {
                 return treatment;
             })
         } else {
-            // updatedTreatments[treatmentIndex].medicines[medicineIndex][e.target.name] = e.target.value;
             updatedTreatments = [...newTreatments].map((treatment, index) => {
                 if(index === treatmentIndex) {
                     return {
@@ -142,17 +114,7 @@ const DetailMR = () => {
                 return treatment;
             })
         }
-        // setTreatments(updatedTreatments);
         dispatch(doctorSlice.actions.setNewTreatments(updatedTreatments));
-    };
-
-    const handleSubmit = () => {
-        // setMrTreatment(treatments)
-        // dispatch(doctorSlice.actions.setTreatments(treatments))
-        console.log(newTreatments);
-        console.log(newMedicalRecord);
-        dispatch(createMedicalRecord())
-        // setTreatments([])
     };
 
     const handleUpdate = () => {
@@ -163,7 +125,6 @@ const DetailMR = () => {
                 confirmButtonText: 'Cập nhật',
                 cancelButtonText: 'Hủy'
               }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
                     dispatch(updateMedicalRecord());
                 } else if (result.isDenied) {

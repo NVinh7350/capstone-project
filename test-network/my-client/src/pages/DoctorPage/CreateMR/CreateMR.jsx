@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import doctorSlice, { createMedicalRecord, doctorSelector, updateMedicalRecord } from "../DoctorSlice";
+import doctorSlice, { completedMedicalRecord, createMedicalRecord, doctorSelector, updateMedicalRecord } from "../DoctorSlice";
 import "./CreateMR.css";
 import { changeDateForm, getAge, getDate } from "../../../utils/TimeUtils";
 import TextField from "../../../components/TextField/TextField";
@@ -10,6 +10,7 @@ import { loginSelector } from "../../LoginPage/LoginSlice";
 import { getUser } from "../../../utils/LocalStorage";
 import Modal from "../../../components/Modal/Modal";
 import ReactLoading from "react-loading";
+import Swal from 'sweetalert2'
 const CreateMR = () => {
     const dispatch = useDispatch();
     const doctorSelect = useSelector(doctorSelector);
@@ -74,21 +75,10 @@ const CreateMR = () => {
             }
             return e
         });
-        // updatedTreatments[treatmentIndex]?.medicines?.push({
-        //     medicineName: '',
-        //     drugDosage: '',
-        //     drugFrequency: '',
-        //     totalDay: '',
-        //     specify: ''
-        // });
-        // setTreatments(updatedTreatments);
-        console.log(updatedTreatments)
         dispatch(doctorSlice.actions.setNewTreatments(updatedTreatments));
     };
 
     const handleRemoveMedicine = (treatmentIndex, medicineIndex) => {
-        // const updatedTreatments = [...newTreatments];
-        // updatedTreatments[treatmentIndex].medicines.splice(medicineIndex, 1);
         let updatedTreatments = [...newTreatments].map((e, index) => {
             if(index === treatmentIndex) {
                 return {
@@ -100,14 +90,12 @@ const CreateMR = () => {
             }
             return e
         });
-        // setTreatments(updatedTreatments);
         dispatch(doctorSlice.actions.setNewTreatments(updatedTreatments));
     };
 
     const handleInputChange = (treatmentIndex, medicineIndex, e) => {
         let updatedTreatments 
         if (medicineIndex === null) {
-            // updatedTreatments[treatmentIndex][e.target.name] = e.target.value;
             updatedTreatments = [...newTreatments].map((treatment, index) => {
                 if(index === treatmentIndex) {
                     return {
@@ -118,7 +106,6 @@ const CreateMR = () => {
                 return treatment;
             })
         } else {
-            // updatedTreatments[treatmentIndex].medicines[medicineIndex][e.target.name] = e.target.value;
             updatedTreatments = [...newTreatments].map((treatment, index) => {
                 if(index === treatmentIndex) {
                     return {
@@ -137,27 +124,53 @@ const CreateMR = () => {
                 return treatment;
             })
         }
-        // setTreatments(updatedTreatments);
         dispatch(doctorSlice.actions.setNewTreatments(updatedTreatments));
     };
 
     const handleSubmit = () => {
-        // setMrTreatment(treatments)
-        // dispatch(doctorSlice.actions.setTreatments(treatments))
-        console.log(newTreatments);
-        console.log(newMedicalRecord);
-        dispatch(createMedicalRecord())
-        // setTreatments([])
-    };
-
+        Swal.fire({
+            title: 'Tạo bệnh án?',
+            showCancelButton: true,
+            confirmButtonText: 'Tạo',
+            cancelButtonText: 'Hủy'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(createMedicalRecord())
+            } else if (result.isDenied) {
+            }
+            })
+    }
     const handleUpdate = () => {
         if(newTreatments?.length) {
-            console.log(newTreatments);
-            dispatch(updateMedicalRecord());
+            Swal.fire({
+                title: 'Cập nhật bệnh án?',
+                showCancelButton: true,
+                confirmButtonText: 'Cập nhật',
+                cancelButtonText: 'Hủy'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    dispatch(updateMedicalRecord());
+                } else if (result.isDenied) {
+                }
+              })
         } else {
             console.log('not update')
         }
     }
+
+    const handleFinish = () => {
+        Swal.fire({
+            title: 'Kết thúc bệnh án?',
+            showCancelButton: true,
+            confirmButtonText: 'Kết thúc',
+          }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(completedMedicalRecord());
+            } else if (result.isDenied) {
+            }
+        })
+    }
+
 
     const handleChangeMR = (e) => {
         dispatch(doctorSlice.actions.setNewMedicalRecord({
@@ -181,20 +194,6 @@ const CreateMR = () => {
                     className="mr-patient-row"
                     style={{ width: "60%", marginBottom: 0 }}
                 ></div>
-                {/* <div
-                    className="mr-patient-row"
-                    style={{ width: "20%", marginBottom: 0 }}
-                >
-                    <label>Bệnh viện: </label>
-                    <span>{}</span>
-                </div>
-                <div
-                    className="mr-patient-row"
-                    style={{ width: "20%", marginBottom: 0 }}
-                >
-                    <label>Bệnh viện: </label>
-                    <span>{}</span>
-                </div> */}
                 <hr className="mr-patient-container-hr " />
                 <h3 style={{ width: "100%" }}>HÀNH CHÍNH</h3>
                 <div className="mr-patient-row" style={{ width: "40%" }}>
@@ -533,20 +532,52 @@ const CreateMR = () => {
 
                 </div>
 
-                <TreatmentForm treatments={newTreatments} handleAddMedicine={handleAddMedicine} handleAddTreatment={handleAddTreatment} handleRemoveMedicine={handleRemoveMedicine} handleRemoveTreatment={handleRemoveTreatment} handleInputChange={handleInputChange}></TreatmentForm>
                 {
-                    medicalRecord ? 
+                    medicalRecord && medicalRecord?.status === 'CREATING' ? 
+                    <>
+                    <TreatmentForm treatments={newTreatments} handleAddMedicine={handleAddMedicine} handleAddTreatment={handleAddTreatment} handleRemoveMedicine={handleRemoveMedicine} handleRemoveTreatment={handleRemoveTreatment} handleInputChange={handleInputChange}></TreatmentForm>
                     <div className="action-button-send" style={{width: '20%', height:'42px', margin: '28px', textAlign:'center', display:'flex', alignItems:'center', justifyContent:'center'}} onClick={handleUpdate}>
                         {
-                            doctorSelect.isLoading ? <ReactLoading
+                            doctorSelect.isLoading === 'updateMedicalRecord' ? <ReactLoading
                             color="white"
                             height="40px"
                             width="40px"
                             type={"spinningBubbles"}
                         ></ReactLoading> : 'Cập nhật bệnh án'
                         }
-                    </div> :
-                    <div className="action-button-send" style={{width: '20%', height:'42px', margin: '28px', textAlign:'center', display:'flex', alignItems:'center', justifyContent:'center'}} onClick={handleSubmit}>Tạo bệnh án</div>
+                    </div>
+                    <button className="action-button-send" 
+                    style={{width: '20%', height:'42px', margin: '28px', textAlign:'center', display:'flex', alignItems:'center', justifyContent:'center', border:'none', outline:'none', background:'#FCA308'}} onClick={handleFinish}>
+                            {
+                                doctorSelect.isLoading === 'completedMedicalRecord' ? <ReactLoading
+                                color="white"
+                                height="40px"
+                                width="40px"
+                                type={"spinningBubbles"}
+                            ></ReactLoading> : 'Kết thúc bệnh án'
+                            }
+                    </button>
+                    </>
+                    :
+                    medicalRecord ? 
+                    <></> :
+                    <>
+                    <TreatmentForm treatments={newTreatments} handleAddMedicine={handleAddMedicine} handleAddTreatment={handleAddTreatment} handleRemoveMedicine={handleRemoveMedicine} handleRemoveTreatment={handleRemoveTreatment} handleInputChange={handleInputChange}></TreatmentForm>
+                    <div className="action-button-send" 
+                    style={{width: '20%', height:'42px', margin: '28px', textAlign:'center', display:'flex', alignItems:'center', justifyContent:'center'}} 
+                    onClick={handleSubmit}>
+                        {
+                            doctorSelect.isLoading === 'createMedicalRecord' ? 
+                            <ReactLoading
+                            color="white"
+                            height="40px"
+                            width="40px"
+                            type={"spinningBubbles"}
+                        ></ReactLoading> :
+                            'Tạo bệnh án'
+                        }
+                    </div>
+                    </>
                 }
             </div>
         </div>

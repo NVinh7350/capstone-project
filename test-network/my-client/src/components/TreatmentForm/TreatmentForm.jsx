@@ -15,7 +15,7 @@ const TreatmentForm = ({
         <>
             {treatments?.map((treatment, treatmentIndex) => (
                 <div key={treatmentIndex} className='treatment-form-container'>
-                    <h3>Treatment {treatmentIndex + 1}</h3>
+                    <h3> {readOnly ? 'Điều trị' : 'Điều trị mới'} {treatmentIndex + 1}</h3>
                     <div
                         className="mr-patient-row"
                         style={{
@@ -89,7 +89,7 @@ const TreatmentForm = ({
                                     display: "flex",
                                     justifyContent:'space-between'
                                 }}>
-                                    <h4 style={{margin: '5px'}}>Medicine {medicineIndex + 1}</h4>
+                                    <h4 style={{margin: '5px'}}>{readOnly ? 'Thuốc' : 'Thuốc mới'} {medicineIndex + 1}</h4>
                                     {readOnly ? (
                                         <></>
                                     ) : (

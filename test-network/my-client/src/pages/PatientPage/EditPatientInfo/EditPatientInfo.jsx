@@ -326,7 +326,7 @@ export const EditPatientInfo = () => {
                             checkValidate({...userInfo, ...patientInfo}, requiredFields, () => dispatch(updatePatientInfo()))
                         }}
                     >
-                        {patientSelect.isLoading ?
+                        {patientSelect.isLoading === 'updatePatientInfo' ?
             (<ReactLoading color="white" height='40px' width='40px' type={"spinningBubbles"}></ReactLoading>) :'Cập nhật'}
                     </button>
                     </div>
@@ -378,7 +378,7 @@ export const EditPatientInfo = () => {
                             );
                         }}
                     >
-                        {patientSelect.isLoading ? (
+                        {patientSelect.isLoading === 'changePassword' ? (
                             <ReactLoading
                                 color="white"
                                 height="40px"

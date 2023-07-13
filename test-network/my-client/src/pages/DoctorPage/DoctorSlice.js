@@ -58,16 +58,8 @@ export const doctorSlice = createSlice({
         },
         removeState : (state, action) => {
             state = {
-                isLoading: false,
-                error: null,
-                passwordUpdate: null,
-                patientInfo: null,
-                userInfo : null,
-                accessRequestList: [],
-                accessList: [],
-                detailDoctor: null
+                ...initialState
             }
-            console.log(state)
         },
         setMedicalRecord: (state, action) => {
             state.medicalRecord = action.payload
@@ -88,7 +80,7 @@ export const doctorSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(updateDoctorInfo.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'updateDoctorInfo';
                 state.error = null;
                 state.success = null;
             })
@@ -103,7 +95,7 @@ export const doctorSlice = createSlice({
                 state.success = null;
             })
             .addCase(changePassword.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'changePassword';
                 state.error = null;
                 state.success = null;
             })
@@ -223,7 +215,7 @@ export const doctorSlice = createSlice({
                 state.success = null;
             })
             .addCase(createMedicalRecord.pending, (state) => {
-                state.isLoading = true;
+                state.isLoading = 'createMedicalRecord';
                 state.error = null;
                 state.success = null;
                 

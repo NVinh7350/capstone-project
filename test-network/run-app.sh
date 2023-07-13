@@ -13,6 +13,9 @@ startBC() {
     ./network.sh deployCC -ccn basic -ccp ./my-chaincode-typescript/ -ccl typescript 
 }
 stopBC() {
+  cd my-server-express/src
+  ts-node Prisma/cleanDB.ts
+  cd ../..
   ./network.sh down
 }
 
